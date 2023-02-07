@@ -2,13 +2,13 @@ package io.github.knit_prg.kmc;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
-import javax.swing.JFrame;
-import javax.swing.UIManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 
 public final class GuiStore {
@@ -27,7 +27,7 @@ public final class GuiStore {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				try (BufferedWriter writer = new BufferedWriter(new FileWriter("KMC/settings.json"))) {
-					writer.write(Settings.settings.toPrettyString());
+					writer.write(Settings.toPrettyString());
 				} catch (IOException excp) {
 					excp.printStackTrace();
 					System.exit(1);
