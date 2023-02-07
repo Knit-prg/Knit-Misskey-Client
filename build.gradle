@@ -1,0 +1,82 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
+}
+
+tasks.withType(AbstractCompile).each {
+    it.options.encoding = 'UTF-8'
+}
+tasks.withType(GroovyCompile).each {
+    it.groovyOptions.encoding = 'UTF-8'
+}
+
+group 'io.github.knit_prg'
+version '0.1.0'
+sourceSets {
+    main {
+        java {
+            srcDirs += 'src'
+            destinationDirectory.set(file('build/classes'))
+        }
+        kotlin {
+            srcDirs += 'src'
+            destinationDirectory.set(file('build/classes'))
+        }
+        resources {
+            srcDirs += 'resources'
+            destinationDirectory.set(file('build/classes'))
+        }
+        output.resourcesDir('build/classes')
+    }
+}
+buildDir = 'build'
+mainClassName = 'io.github.knit_prg.kmc.Main'
+
+shadowJar {
+    destinationDirectory.set(file(projectDir))
+    archiveClassifier.set('')
+    manifest {
+        attributes 'Main-Class': 'io.github.knit_prg.kmc.Main'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:23.1.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0'
+    implementation 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0'
+    implementation 'com.formdev:flatlaf:3.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileJava {
+    options.compilerArgs << "-Xlint:deprecation"
+}
+
+kotlin {
+    jvmToolchain(18)
+}
+
+compileKotlin {
+    destinationDirectory = file('build/classes')
+    dependsOn('deleteClasses')
+}
+
+processResources {
+    dependsOn(compileJava)
+}
+
+tasks.register('deleteClasses', Delete) {
+    new File("build/classes").deleteDir()
+}
