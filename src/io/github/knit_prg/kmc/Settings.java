@@ -22,59 +22,48 @@ public final class Settings {
 	}
 
 	public static JsonNode get(String path) {
-		try {
-			return settings.get(path);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+		String[] pathSplit = path.split("\\.");
+		JsonNode searching = null;
+		for (String pathPart : pathSplit) {
+			JsonNode temp;
+			if (searching == null) {
+				temp = settings.get(pathPart);
+			} else {
+				temp = searching.get(pathPart);
+			}
+			if (temp == null) {
+				return null;
+			}
+			searching = temp;
 		}
+		return searching;
 	}
 
 	@SuppressWarnings("unused")
 	public static boolean getAsBoolean(String path) {
-		try {
-			return settings.get(path).asBoolean();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+		return getAsBoolean(path, false);
 	}
 
-	@SuppressWarnings("unused")
 	public static boolean getAsBoolean(String path, boolean defaultValue) {
-		try {
-			return settings.get(path).asBoolean(defaultValue);
-		} catch (Exception e) {
-			e.printStackTrace();
+		JsonNode get = get(path);
+		if (get == null) {
 			return defaultValue;
+		} else {
+			return get.asBoolean();
 		}
 	}
 
 	@SuppressWarnings("unused")
 	public static String getAsString(String path) {
-		try {
-			return settings.get(path).asText();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return path;
-		}
+		return getAsString(path, null);
 	}
 
 	public static String getAsString(String path, String defaultValue) {
-		try {
-			return settings.get(path).asText(defaultValue);
-		} catch (Exception e) {
-			e.printStackTrace();
+		JsonNode get = get(path);
+		if (get == null) {
 			return defaultValue;
-		}
-	}
-
-	@SuppressWarnings("unused")
-	public static void put(String path, String value) {
-		try {
-			settings.put(path, value);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			return get.asText();
 		}
 	}
 
