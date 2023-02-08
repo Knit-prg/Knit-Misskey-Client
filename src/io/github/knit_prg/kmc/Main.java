@@ -1,5 +1,7 @@
 package io.github.knit_prg.kmc;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,13 +12,22 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.ZonedDateTime;
 import java.util.Properties;
+import javax.swing.UIManager;
 
 public final class Main {
 
 	public static void main(String[] args) {
 		extractResource();
 		System.out.println(Lang.get("kmc.test"));
-		GuiStore.init();
+		FlatDarkLaf.setup();
+		UIManager.put("TitlePane.menuBarEmbedded", false);
+		UIManager.put("TitlePane.unifiedBackground", false);
+		Gui.init();
+		if (Settings.get("tokens").size() == 0) {
+			Gui.openGetApiKey();
+		} else {
+			Gui.openTimeline();
+		}
 	}
 
 	private static void extractResource() {
