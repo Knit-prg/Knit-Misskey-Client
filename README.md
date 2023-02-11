@@ -2,8 +2,8 @@
 
 ## 実装済API一覧
 
-- MiAuth
+- [x] [MiAuth](https://misskey-hub.net/docs/api)
 
 ### エンドポイント
 
-- [ ] notes/create (https://misskey-hub.net/docs/api/endpoints/notes/create.html)
+- [ ] [notes/create](https://misskey-hub.net/docs/api/endpoints/notes/create.html)
