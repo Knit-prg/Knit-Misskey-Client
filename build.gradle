@@ -17,15 +17,15 @@ version '0.1.0'
 sourceSets {
     main {
         java {
-            srcDirs += 'src'
+            srcDirs = ['src']
             destinationDirectory.set(file('build/classes'))
         }
         kotlin {
-            srcDirs += 'src'
+            srcDirs = ['src']
             destinationDirectory.set(file('build/classes'))
         }
         resources {
-            srcDirs += 'resources'
+            srcDirs = ['resources']
             destinationDirectory.set(file('build/classes'))
         }
         output.resourcesDir('build/classes')
