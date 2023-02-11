@@ -24,7 +24,7 @@ public final class Main {
 		UIManager.put("TitlePane.unifiedBackground", false);
 		Gui.init();
 		if (Settings.get("tokens").size() == 0) {
-			Gui.openGetApiKey();
+			Gui.openMiAuth();
 		} else {
 			Gui.openTimeline();
 		}

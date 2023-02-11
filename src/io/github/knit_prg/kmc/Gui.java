@@ -60,7 +60,7 @@ public final class Gui {
 		mainFrame.setVisible(true);
 	}
 
-	public static void openGetApiKey() {
+	public static void openMiAuth() {
 		Container contentPane = mainFrame.getContentPane();
 		contentPane.removeAll();
 		BoxLayout layout = new BoxLayout(contentPane, BoxLayout.Y_AXIS);
@@ -163,6 +163,7 @@ public final class Gui {
 					ObjectMapper mapper = new ObjectMapper();
 					ObjectNode newToken = mapper.createObjectNode();
 					newToken.put("token", token);
+					newToken.put("type", "misskey-miauth");
 					newToken.put("user", userName);
 					tokens.add(newToken);
 					openTimeline();
