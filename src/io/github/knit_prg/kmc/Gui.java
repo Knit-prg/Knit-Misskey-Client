@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JFrame;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * GUIを管理する。
  *
@@ -20,7 +22,7 @@ public final class Gui {
 	 *
 	 * @since 0.1.0
 	 */
-	public static JFrame mainFrame = new JFrame();
+	public static @NotNull JFrame mainFrame = new JFrame();
 
 	/**
 	 * 初期化

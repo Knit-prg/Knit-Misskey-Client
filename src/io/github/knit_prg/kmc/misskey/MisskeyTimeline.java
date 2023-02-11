@@ -10,7 +10,7 @@ import java.awt.Container;
  * @author Knit prg.
  * @since 0.1.0
  */
-public class MisskeyTimeline {
+public final class MisskeyTimeline {
 
 	/**
 	 * 画面を開く

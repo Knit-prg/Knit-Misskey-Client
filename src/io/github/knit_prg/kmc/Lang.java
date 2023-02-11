@@ -1,6 +1,5 @@
 package io.github.knit_prg.kmc;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -8,6 +7,9 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * 言語リソースを管理する
@@ -22,7 +24,7 @@ public final class Lang {
 	 *
 	 * @since 0.1.0
 	 */
-	private static final ResourceBundle lang = createLang();
+	private static final @Nullable ResourceBundle lang = createLang();
 
 	/**
 	 * 言語リソースを読み込む
@@ -30,7 +32,7 @@ public final class Lang {
 	 * @return リソース
 	 * @since 0.1.0
 	 */
-	private static ResourceBundle createLang() {
+	private static @Nullable ResourceBundle createLang() {
 		try (URLClassLoader loader = new URLClassLoader(new URL[]{Paths.get("KMC/lang").toFile().toURI().toURL()})) {
 			Locale locale = new Locale(Settings.getInstance().getLang());
 			return ResourceBundle.getBundle("lang", locale, loader);
@@ -46,7 +48,7 @@ public final class Lang {
 	 * @param key キー
 	 * @return 値、見つからなければキー
 	 */
-	public static String get(String key) {
+	public static @NotNull String get(@NotNull String key) {
 		try {
 			return lang.getString(key);
 		} catch (MissingResourceException | NullPointerException e) {

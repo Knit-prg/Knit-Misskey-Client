@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * 言語ファイルのメタデータを表す
@@ -22,14 +24,14 @@ public final class LangPropertiesMetaData {
 	 *
 	 * @since 0.1.0
 	 */
-	private String name;
+	private @Nullable String name;
 
 	/**
 	 * 言語ファイルが更新された日時
 	 *
 	 * @since 0.1.0
 	 */
-	private ZonedDateTime updateTime;
+	private @Nullable ZonedDateTime updateTime;
 
 	/**
 	 * メタデータを読み込む
@@ -37,7 +39,7 @@ public final class LangPropertiesMetaData {
 	 * @param is InputStream
 	 * @since 0.1.0
 	 */
-	public LangPropertiesMetaData(InputStream is) {
+	public LangPropertiesMetaData(@NotNull InputStream is) {
 		String text;
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
 			while ((text = br.readLine()) != null) {
@@ -58,7 +60,7 @@ public final class LangPropertiesMetaData {
 	 * @return 言語名
 	 * @since 0.1.0
 	 */
-	public String getName() {
+	public @Nullable String getName() {
 		return name;
 	}
 
@@ -68,7 +70,7 @@ public final class LangPropertiesMetaData {
 	 * @return 更新時刻
 	 * @since 0.1.0
 	 */
-	public ZonedDateTime getUpdateTime() {
+	public @Nullable ZonedDateTime getUpdateTime() {
 		return updateTime;
 	}
 }
