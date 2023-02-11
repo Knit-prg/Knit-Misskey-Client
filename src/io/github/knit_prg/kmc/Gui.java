@@ -127,9 +127,10 @@ public final class Gui {
 		button.addActionListener(e -> {
 			textField.setEnabled(false);
 			String uuid = new UUID(new Random().nextLong(Long.MAX_VALUE), new Random().nextLong(Long.MAX_VALUE)).toString();
+			String miAuthUrl = textField.getText() + "/miauth/" + uuid + "?name=Knit%20Misskey%20Client&permission=read:account,write:account,read:blocks,write:blocks,read:drive,write:drive,read:favorites,write:favorites,read:following,write:following,read:messaging,write:messaging,read:mutes,write:mutes,write:notes,read:notifications,write:notifications,write:reactions,write:votes,read:pages,write:pages,write:page-likes,read:page-likes";
 			if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 				try {
-					Desktop.getDesktop().browse(new URI(textField.getText() + "/miauth/" + uuid + "?name=Knit%20Misskey%20Client&permission=read:account,write:account,read:blocks,write:blocks,read:drive,write:drive,read:favorites,write:favorites,read:following,write:following,read:messaging,write:messaging,read:mutes,write:mutes,write:notes,read:notifications,write:notifications,write:reactions,write:votes,read:pages,write:pages,write:page-likes,read:page-likes"));
+					Desktop.getDesktop().browse(new URI(miAuthUrl));
 					finalButton.setVisible(true);
 					uuids[0] = uuid;
 				} catch (IOException | URISyntaxException excp) {
@@ -137,6 +138,10 @@ public final class Gui {
 					warn.setText(Lang.get("kmc.login.failed_to_open_browser"));
 					textField.setEnabled(true);
 				}
+			} else {
+				info.setText(miAuthUrl);
+				finalButton.setVisible(true);
+				uuids[0] = uuid;
 			}
 		});
 		TimerTask getToken = new TimerTask() {
