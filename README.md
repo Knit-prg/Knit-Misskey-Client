@@ -6,4 +6,5 @@
 
 ### エンドポイント
 
-- [ ] [notes/create](https://misskey-hub.net/docs/api/endpoints/notes/create.html)
+- [x] [notes/create](https://misskey-hub.net/docs/api/endpoints/notes/create.html)
+    - 単純な送信のみ
