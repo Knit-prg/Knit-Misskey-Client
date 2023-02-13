@@ -43,26 +43,32 @@ public final class MisskeyTimeline {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 		contentPane.add(centerPanel, BorderLayout.CENTER);
-		postContent = new JTextArea();
-		postContent.setAlignmentX(Component.CENTER_ALIGNMENT);
-		postContent.setMaximumSize(new Dimension(postContent.getMaximumSize().width, 100));
-		postContent.setLineWrap(true);
-		JButton postButton = new JButton();
-		postButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		postButton.setText(Lang.get("kmc.notes.create"));
+		postContent = new JTextArea() {
+			{
+				setAlignmentX(Component.CENTER_ALIGNMENT);
+				setMaximumSize((new Dimension(getMaximumSize().width, 100)));
+				setLineWrap(true);
+			}
+		};
+		JButton postButton = new JButton() {
+			{
+				setAlignmentX(Component.CENTER_ALIGNMENT);
+				setText(Lang.get("kmc.notes.create"));
+				addActionListener(e -> {
+					Create.NotesCreateRequest request = new Create.NotesCreateRequest();
+					request.setText(postContent.getText());
+					try {
+						new Create().get(Settings.getInstance().getTokens().get(0), request);
+					} catch (Exception excp) {
+						excp.printStackTrace();
+						Dialogs.errorMsg(excp.getMessage());
+					}
+				});
+			}
+		};
 		centerPanel.add(postContent);
 		centerPanel.add(postButton);
 		centerPanel.add(Box.createHorizontalGlue());
-		postButton.addActionListener(e -> {
-			Create.NotesCreateRequest request = new Create.NotesCreateRequest();
-			request.setText(postContent.getText());
-			try {
-				new Create().get(Settings.getInstance().getTokens().get(0), request);
-			} catch (Exception excp) {
-				excp.printStackTrace();
-				Dialogs.errorMsg(excp.getMessage());
-			}
-		});
 		contentPane.setVisible(false);
 		contentPane.setVisible(true);
 		contentPane.repaint();

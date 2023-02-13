@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 import io.github.knit_prg.kmc.Gui
 import io.github.knit_prg.kmc.Lang
+import io.github.knit_prg.kmc.Post
 import io.github.knit_prg.kmc.Settings
 import io.github.knit_prg.kmc.misskey.MisskeyTimeline
 import io.github.knit_prg.kmc.settingsProperties.Token
@@ -14,7 +15,6 @@ import java.awt.Desktop
 import java.awt.Dimension
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
-import java.io.PrintStream
 import java.net.URI
 import java.net.URL
 import java.util.Random
@@ -126,31 +126,49 @@ class MiAuth {
 			order = JLabel(Lang.get("kmc.login.input_instance"))
 			order.alignmentX = Component.CENTER_ALIGNMENT
 			contentPane.add(order)
-			textField = JTextField()
-			textField.alignmentX = Component.CENTER_ALIGNMENT
-			textField.maximumSize = Dimension(200, 25)
-			textField.addKeyListener(object : KeyAdapter() {
-				override fun keyTyped(e: KeyEvent?) {
-					onInput()
+			textField = object : JTextField() {
+				init {
+					alignmentX = Component.CENTER_ALIGNMENT
+					maximumSize = Dimension(200, 25)
+					addKeyListener(object : KeyAdapter() {
+						override fun keyTyped(e: KeyEvent?) {
+							onInput()
+						}
+					})
 				}
-			})
+			}
 			contentPane.add(textField)
-			button = JButton(Lang.get("kmc.login.button"))
-			button.alignmentX = Component.CENTER_ALIGNMENT
-			button.isEnabled = false
-			button.addActionListener { onDecideInstance() }
+			button = object : JButton() {
+				init {
+					text = (Lang.get("kmc.login.button"))
+					alignmentX = Component.CENTER_ALIGNMENT
+					isEnabled = false
+					addActionListener { onDecideInstance() }
+				}
+			}
 			contentPane.add(button)
-			warn = JLabel(Lang.get("kmc.login.invalid"))
-			warn.alignmentX = Component.CENTER_ALIGNMENT
-			warn.foreground = Color.RED
+			warn = object : JLabel() {
+				init {
+					text = Lang.get("kmc.login.invalid")
+					alignmentX = Component.CENTER_ALIGNMENT
+					foreground = Color.RED
+				}
+			}
 			contentPane.add(warn)
-			info = JLabel()
-			info.alignmentX = Component.CENTER_ALIGNMENT
+			info = object : JLabel() {
+				init {
+					alignmentX = Component.CENTER_ALIGNMENT
+				}
+			}
 			contentPane.add(info)
-			finalButton = JButton(Lang.get("kmc.login.final_button"))
-			finalButton.alignmentX = Component.CENTER_ALIGNMENT
-			finalButton.isVisible = false
-			finalButton.addActionListener { tryLogin() }
+			finalButton = object : JButton() {
+				init {
+					text = Lang.get("kmc.login.final_button")
+					alignmentX = Component.CENTER_ALIGNMENT
+					isVisible = false
+					addActionListener { tryLogin() }
+				}
+			}
 			contentPane.add(finalButton)
 			contentPane.add(Box.createHorizontalGlue())
 			contentPane.isVisible = false
@@ -235,16 +253,7 @@ class MiAuth {
 			val task = object : TimerTask() {
 				override fun run() {
 					try {
-						val url = URL("${textField.text}/api/miauth/${uuid}/check")
-						val connection = url.openConnection() as HttpsURLConnection
-						connection.requestMethod = "POST"
-						connection.doInput = true
-						connection.doOutput = true
-						connection.setRequestProperty("Content-Type", "application/json;charset=utf-8")
-						val print = PrintStream(connection.outputStream)
-						print.print("{}")
-						print.close()
-						connection.connect()
+						val connection = Post("${textField.text}/api/miauth/${uuid}/check", "{}").connection
 						var instanceName = textField.text
 						instanceName = StringUtils.stripStart(instanceName, "https://")
 						instanceName = StringUtils.stripEnd(instanceName, "/")
