@@ -41,6 +41,34 @@ public final class MisskeyTimeline {
 	private static JTextField cwText;
 
 	/**
+	 * ローカルのみかの選択部
+	 *
+	 * @since 0.1.0
+	 */
+	private static JCheckBox localOnlyCheckBox;
+
+	/**
+	 * 絵文字非展開の選択部
+	 *
+	 * @since 0.1.0
+	 */
+	private static JCheckBox noExtractEmojisCheckBox;
+
+	/**
+	 * ハッシュタグ非展開の選択部
+	 *
+	 * @since 0.1.0
+	 */
+	private static JCheckBox noExtractHashtagsCheckBox;
+
+	/**
+	 * メンション非展開の選択部
+	 *
+	 * @since 0.1.0
+	 */
+	private static JCheckBox noExtractMentionsCheckBox;
+
+	/**
 	 * 投稿部
 	 *
 	 * @since 0.1.0
@@ -81,6 +109,30 @@ public final class MisskeyTimeline {
 			}
 		};
 		centerPanel.add(cwPanel);
+		noExtractEmojisCheckBox = new JCheckBox() {
+			{
+				setText(Lang.get("kmc.notes.create.no_extract_emojis"));
+			}
+		};
+		noExtractHashtagsCheckBox = new JCheckBox() {
+			{
+				setText(Lang.get("kmc.notes.create.no_extract_hashtags"));
+			}
+		};
+		noExtractMentionsCheckBox = new JCheckBox() {
+			{
+				setText(Lang.get("kmc.notes.create.no_extract_mentions"));
+			}
+		};
+		JPanel checkBoxesPanel = new JPanel() {
+			{
+				setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+				add(noExtractEmojisCheckBox);
+				add(noExtractHashtagsCheckBox);
+				add(noExtractMentionsCheckBox);
+			}
+		};
+		centerPanel.add(checkBoxesPanel);
 		postContent = new JTextArea() {
 			{
 				setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -99,6 +151,9 @@ public final class MisskeyTimeline {
 					if (cwCheckBox.isSelected()) {
 						request.setCw(cwText.getText());
 					}
+					request.setNoExtractEmojis(noExtractEmojisCheckBox.isSelected());
+					request.setNoExtractHashtags(noExtractHashtagsCheckBox.isSelected());
+					request.setNoExtractMentions(noExtractMentionsCheckBox.isSelected());
 					try {
 						new Create().get(Settings.getInstance().getTokens().get(0), request);
 					} catch (Exception excp) {
