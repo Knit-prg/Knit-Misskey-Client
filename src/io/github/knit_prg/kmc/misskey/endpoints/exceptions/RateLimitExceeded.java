@@ -4,24 +4,25 @@ import io.github.knit_prg.kmc.Lang;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * CANNOT_REPLY_TO_A_PURE_RENOTE
+ * RATE_LIMIT_EXCEEDED
  *
  * @author Knit prg.
  * @since 0.1.0
  */
-public class CannotReplyToAPureRenote extends EndpointsError {
+public class RateLimitExceeded extends EndpointsError {
+
 	@Override
 	public @NotNull String getCode() {
-		return "CANNOT_REPLY_TO_A_PURE_RENOTE";
+		return "RATE_LIMIT_EXCEEDED";
 	}
 
 	@Override
 	public @NotNull String getId() {
-		return "3ac74a84-8fd5-4bb0-870f-01804f82ce15";
+		return "d5826d14-3982-4d2e-8011-b9e9f02499ef";
 	}
 
 	@Override
 	public @NotNull String getMessage() {
-		return Lang.get("kmc.errors.cannot_reply_to_a_pure_renote");
+		return Lang.get("kmc.errors.rate_limit_exceeded");
 	}
 }

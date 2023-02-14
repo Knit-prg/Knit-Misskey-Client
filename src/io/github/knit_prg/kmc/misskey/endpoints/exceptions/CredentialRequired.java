@@ -4,24 +4,24 @@ import io.github.knit_prg.kmc.Lang;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * CANNOT_REPLY_TO_A_PURE_RENOTE
+ * CREDENTIAL_REQUIRED
  *
  * @author Knit prg.
  * @since 0.1.0
  */
-public class CannotReplyToAPureRenote extends EndpointsError {
+public class CredentialRequired extends EndpointsError {
 	@Override
 	public @NotNull String getCode() {
-		return "CANNOT_REPLY_TO_A_PURE_RENOTE";
+		return "CREDENTIAL_REQUIRED";
 	}
 
 	@Override
 	public @NotNull String getId() {
-		return "3ac74a84-8fd5-4bb0-870f-01804f82ce15";
+		return "1384574d-a912-4b81-8601-c7b1c4085df1";
 	}
 
 	@Override
 	public @NotNull String getMessage() {
-		return Lang.get("kmc.errors.cannot_reply_to_a_pure_renote");
+		return Lang.get("kmc.errors.credential_required");
 	}
 }

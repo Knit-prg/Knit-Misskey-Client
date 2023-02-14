@@ -4,24 +4,25 @@ import io.github.knit_prg.kmc.Lang;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * CANNOT_REPLY_TO_A_PURE_RENOTE
+ * INVALID_PARAM
  *
  * @author Knit prg.
  * @since 0.1.0
  */
-public class CannotReplyToAPureRenote extends EndpointsError {
+public class InvalidParam extends EndpointsError {
+
 	@Override
 	public @NotNull String getCode() {
-		return "CANNOT_REPLY_TO_A_PURE_RENOTE";
+		return "INVALID_PARAM";
 	}
 
 	@Override
 	public @NotNull String getId() {
-		return "3ac74a84-8fd5-4bb0-870f-01804f82ce15";
+		return "3d81ceae-475f-4600-b2a8-2bc116157532";
 	}
 
 	@Override
 	public @NotNull String getMessage() {
-		return Lang.get("kmc.errors.cannot_reply_to_a_pure_renote");
+		return Lang.get("kmc.errors.invalid_param");
 	}
 }

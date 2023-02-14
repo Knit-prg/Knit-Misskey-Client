@@ -4,24 +4,24 @@ import io.github.knit_prg.kmc.Lang;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * CANNOT_REPLY_TO_A_PURE_RENOTE
+ * PERMISSION_DENIED
  *
  * @author Knit prg.
  * @since 0.1.0
  */
-public class CannotReplyToAPureRenote extends EndpointsError {
+public class PermissionDenied extends EndpointsError {
 	@Override
 	public @NotNull String getCode() {
-		return "CANNOT_REPLY_TO_A_PURE_RENOTE";
+		return "PERMISSION_DENIED";
 	}
 
 	@Override
 	public @NotNull String getId() {
-		return "3ac74a84-8fd5-4bb0-870f-01804f82ce15";
+		return "1370e5b7-d4eb-4566-bb1d-7748ee6a1838";
 	}
 
 	@Override
 	public @NotNull String getMessage() {
-		return Lang.get("kmc.errors.cannot_reply_to_a_pure_renote");
+		return Lang.get("kmc.errors.permission_denied");
 	}
 }

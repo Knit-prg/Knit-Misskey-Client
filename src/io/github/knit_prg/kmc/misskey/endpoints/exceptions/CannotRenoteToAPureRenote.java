@@ -1,5 +1,6 @@
 package io.github.knit_prg.kmc.misskey.endpoints.exceptions;
 
+import io.github.knit_prg.kmc.Lang;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -21,6 +22,6 @@ public class CannotRenoteToAPureRenote extends EndpointsError {
 
 	@Override
 	public @NotNull String getMessage() {
-		return "CANNOT_RENOTE_TO_A_PURE_RENOTE";
+		return Lang.get("kmc.errors.cannot_renote_to_a_pure_renote");
 	}
 }
