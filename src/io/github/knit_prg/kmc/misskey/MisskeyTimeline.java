@@ -11,14 +11,20 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
 /**
  * Misskeyのタイムライン画面を示す
@@ -83,6 +89,41 @@ public final class MisskeyTimeline {
 	 * @since 0.1.0
 	 */
 	private static JTextArea postContent;
+
+	/**
+	 * 投票を行うかの選択肢
+	 *
+	 * @since 0.1.0
+	 */
+	private static JCheckBox pollCheckBox;
+
+	/**
+	 * 投票の選択リスト
+	 *
+	 * @since 0.1.0
+	 */
+	private static JList<String> pollSelector;
+
+	/**
+	 * 投票の選択肢実体
+	 *
+	 * @since 0.1.0
+	 */
+	private static ArrayList<String> pollSelections;
+
+	/**
+	 * 投票の締め切り期日の選択
+	 *
+	 * @since 0.1.0
+	 */
+	private static JSpinner pollExpireSelector;
+
+	/**
+	 * 投票の複数選択を許容するかの選択
+	 *
+	 * @since 0.1.0
+	 */
+	private static JCheckBox pollMultipleSelector;
 
 	/**
 	 * 画面を開く
@@ -174,6 +215,79 @@ public final class MisskeyTimeline {
 			}
 		};
 		centerPanel.add(postContent);
+		pollSelections = new ArrayList<>() {
+			{
+				add("select 1");
+				add("select 2");
+			}
+		};
+		pollSelector = new JList<>() {
+			{
+				setListData(pollSelections.toArray(String[]::new));
+			}
+		};
+		pollMultipleSelector = new JCheckBox() {
+			{
+				setText(Lang.get("kmc.create.notes.poll.multiple"));
+			}
+		};
+		JTextArea addText = new JTextArea() {
+			{
+				setMaximumSize(new Dimension(getMaximumSize().width, 20));
+			}
+		};
+		JButton addButton = new JButton() {
+			{
+				setText(Lang.get("kmc.notes.create.poll.add"));
+				addActionListener(e -> {
+					if (!addText.getText().isEmpty()) {
+						pollSelections.add(addText.getText());
+						pollSelector.setListData(pollSelections.toArray(String[]::new));
+					}
+				});
+			}
+		};
+		JButton deleteButton = new JButton() {
+			{
+				setText(Lang.get("kmc.notes.create.poll.delete"));
+				addActionListener(e -> {
+					List<String> toDelete = pollSelector.getSelectedValuesList();
+					toDelete.forEach(item -> {
+						if (pollSelections.size() <= 2) {
+							return;
+						}
+						pollSelections.remove(item);
+						pollSelector.setListData(pollSelections.toArray(String[]::new));
+					});
+				});
+			}
+		};
+		pollExpireSelector = new JSpinner(new SpinnerDateModel()) {
+			{
+				setMaximumSize(new Dimension(getMaximumSize().width, 20));
+			}
+		};
+		JPanel pollPanel = new JPanel() {
+			{
+				setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+				add(pollSelector);
+				add(pollMultipleSelector);
+				add(addText);
+				add(addButton);
+				add(deleteButton);
+				add(pollExpireSelector);
+				setVisible(false);
+			}
+		};
+		pollCheckBox = new JCheckBox() {
+			{
+				setText(Lang.get("kmc.notes.create.poll"));
+				setAlignmentX(Component.CENTER_ALIGNMENT);
+				addActionListener(e -> pollPanel.setVisible(pollCheckBox.isSelected()));
+			}
+		};
+		centerPanel.add(pollCheckBox);
+		centerPanel.add(pollPanel);
 		JButton postButton = new JButton() {
 			{
 				setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -194,6 +308,13 @@ public final class MisskeyTimeline {
 						case 3 -> request.setVisibility("specified");
 					}
 					request.setLocalOnly(localOnlyCheckBox.isSelected());
+					if (pollCheckBox.isSelected()) {
+						Create.NotesCreatePoll pollData = new Create.NotesCreatePoll();
+						pollData.setChoices(pollSelections);
+						pollData.setExpiresAt(((Date) (pollExpireSelector.getValue())).getTime());
+						pollData.setMultiple(pollMultipleSelector.isSelected());
+						request.setPoll(pollData);
+					}
 					try {
 						new Create().get(Settings.getInstance().getTokens().get(0), request);
 					} catch (Exception excp) {

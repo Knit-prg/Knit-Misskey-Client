@@ -32,18 +32,23 @@ class Create : Endpoint() {
 		}
 		request.i = token.token
 		val post = Post("https://${token.user.split("@")[1]}/api/notes/create", request.toString())
-		val json = ObjectMapper().readTree(post.connection.inputStream) ?: throw InternalError()
-		//todo:返り値仮置き
-		val errorCode = json.get("error")?.get("code")?.asText() ?: return NotesCreateResponse()
-		when (errorCode) {
-			"CANNOT_CREATE_ALREADY_EXPIRED_POLL" -> throw CannotCreateAlreadyExpiredPoll()
-			"CANNOT_RENOTE_TO_A_PURE_RENOTE" -> throw CannotRenoteToAPureRenote()
-			"CANNOT_REPLY_TO_A_PURE_RENOTE" -> throw CannotReplyToAPureRenote()
-			"NO_SUCH_CHANNEL" -> throw NoSuchChannel()
-			"NO_SUCH_RENOTE_TARGET" -> throw NoSuchRenoteTarget()
-			"NO_SUCH_REPLY_TARGET" -> throw NoSuchReplyTarget()
-			"YOU_HAVE_BEEN_BLOCKED" -> throw YouHaveBeenBlocked()
-			else -> throw EndpointsError.commonErrors(errorCode)
+		try {
+			val json = ObjectMapper().readTree(post.connection.inputStream)
+			return NotesCreateResponse()
+		} catch (e: Exception) {
+			val json = ObjectMapper().readTree(post.connection.errorStream)
+			//todo:返り値仮置き
+			val errorCode = json?.get("error")?.get("code")?.asText() ?: throw InternalError()
+			when (errorCode) {
+				"CANNOT_CREATE_ALREADY_EXPIRED_POLL" -> throw CannotCreateAlreadyExpiredPoll()
+				"CANNOT_RENOTE_TO_A_PURE_RENOTE" -> throw CannotRenoteToAPureRenote()
+				"CANNOT_REPLY_TO_A_PURE_RENOTE" -> throw CannotReplyToAPureRenote()
+				"NO_SUCH_CHANNEL" -> throw NoSuchChannel()
+				"NO_SUCH_RENOTE_TARGET" -> throw NoSuchRenoteTarget()
+				"NO_SUCH_REPLY_TARGET" -> throw NoSuchReplyTarget()
+				"YOU_HAVE_BEEN_BLOCKED" -> throw YouHaveBeenBlocked()
+				else -> throw EndpointsError.commonErrors(errorCode)
+			}
 		}
 	}
 
@@ -84,7 +89,7 @@ class Create : Endpoint() {
 				this.choices.forEach { arrayNode.add(it) }
 				objectNode.set("choices", arrayNode) as JsonNode
 				this.expiredAfter?.run { objectNode.put("expiredAfter", this) }
-				this.expiresAt?.run { objectNode.put("expiredAt", this) }
+				this.expiresAt?.run { objectNode.put("expiresAt", this) }
 				objectNode.put("multiple", this.multiple)
 				node.set("poll", objectNode) as JsonNode
 			}
@@ -103,8 +108,8 @@ class Create : Endpoint() {
 
 	class NotesCreatePoll {
 		var choices: ArrayList<String> = ArrayList()
-		var expiredAfter: Int? = null
-		var expiresAt: Int? = null
+		var expiredAfter: Long? = null
+		var expiresAt: Long? = null
 		var multiple = false
 	}
 
