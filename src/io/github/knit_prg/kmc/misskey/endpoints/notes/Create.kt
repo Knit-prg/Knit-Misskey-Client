@@ -52,7 +52,7 @@ class Create : Endpoint() {
 		}
 	}
 
-	class NotesCreateRequest : EndpointRequest() {
+	open class NotesCreateRequest : EndpointRequest() {
 		var i: String = ""
 		var channelId: String? = null
 		var cw: String? = null
@@ -106,7 +106,7 @@ class Create : Endpoint() {
 		}
 	}
 
-	class NotesCreatePoll {
+	open class NotesCreatePoll {
 		var choices: ArrayList<String> = ArrayList()
 		var expiredAfter: Long? = null
 		var expiresAt: Long? = null
