@@ -10,7 +10,7 @@
     - [ ] channelID (チャンネル指定機能)
     - [x] cw (内容隠し)
     - [ ] fileIds (ファイル添付)
-    - [ ] localOnly (ローカルのみ)
+    - [x] localOnly (ローカルのみ)
     - [x] noExtractEmojis (効果不明)
     - [x] noExtractHashtags (効果不明)
     - [x] noExtractMentions (効果不明)
@@ -20,3 +20,7 @@
     - [x] text (本文)
     - [ ] visibleUserIds (特定のユーザーへのみ送信)
     - [ ] visibility (可視性指定)
+        - [x] public
+        - [x] home
+        - [x] followers
+        - [ ] specified

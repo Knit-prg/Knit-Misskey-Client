@@ -15,6 +15,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -42,13 +43,6 @@ public final class MisskeyTimeline {
 	private static JTextField cwText;
 
 	/**
-	 * ローカルのみかの選択部
-	 *
-	 * @since 0.1.0
-	 */
-	private static JCheckBox localOnlyCheckBox;
-
-	/**
 	 * 絵文字非展開の選択部
 	 *
 	 * @since 0.1.0
@@ -70,6 +64,20 @@ public final class MisskeyTimeline {
 	private static JCheckBox noExtractMentionsCheckBox;
 
 	/**
+	 * ローカルのみかの選択部
+	 *
+	 * @since 0.1.0
+	 */
+	private static JCheckBox localOnlyCheckBox;
+
+	/**
+	 * 公開範囲の選択部
+	 *
+	 * @since 0.1.0
+	 */
+	private static JComboBox<String> visibilityComboBox;
+
+	/**
 	 * 投稿部
 	 *
 	 * @since 0.1.0
@@ -88,6 +96,54 @@ public final class MisskeyTimeline {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 		contentPane.add(centerPanel, BorderLayout.CENTER);
+		noExtractEmojisCheckBox = new JCheckBox() {
+			{
+				setText(Lang.get("kmc.notes.create.no_extract_emojis"));
+			}
+		};
+		noExtractHashtagsCheckBox = new JCheckBox() {
+			{
+				setText(Lang.get("kmc.notes.create.no_extract_hashtags"));
+			}
+		};
+		noExtractMentionsCheckBox = new JCheckBox() {
+			{
+				setText(Lang.get("kmc.notes.create.no_extract_mentions"));
+			}
+		};
+		JPanel noExtractsPanel = new JPanel() {
+			{
+				setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+				add(noExtractEmojisCheckBox);
+				add(noExtractHashtagsCheckBox);
+				add(noExtractMentionsCheckBox);
+			}
+		};
+		centerPanel.add(noExtractsPanel);
+		String[] visibilities = new String[]{
+				Lang.get("kmc.notes.create.visibility.public"),
+				Lang.get("kmc.notes.create.visibility.home"),
+				Lang.get("kmc.notes.create.visibility.followers"),
+				//Lang.get("kmc.notes.create.visibility.specified"),
+		};
+		localOnlyCheckBox = new JCheckBox() {
+			{
+				setText(Lang.get("kmc.notes.create.local_only"));
+			}
+		};
+		visibilityComboBox = new JComboBox<>(visibilities) {
+			{
+				setMaximumSize(new Dimension(new Dimension(getMaximumSize().width, 20)));
+			}
+		};
+		JPanel visibilityPanel = new JPanel() {
+			{
+				setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+				add(localOnlyCheckBox);
+				add(visibilityComboBox);
+			}
+		};
+		centerPanel.add(visibilityPanel);
 		cwCheckBox = new JCheckBox() {
 			{
 				setText(Lang.get("kmc.notes.create.is_cw"));
@@ -110,30 +166,6 @@ public final class MisskeyTimeline {
 			}
 		};
 		centerPanel.add(cwPanel);
-		noExtractEmojisCheckBox = new JCheckBox() {
-			{
-				setText(Lang.get("kmc.notes.create.no_extract_emojis"));
-			}
-		};
-		noExtractHashtagsCheckBox = new JCheckBox() {
-			{
-				setText(Lang.get("kmc.notes.create.no_extract_hashtags"));
-			}
-		};
-		noExtractMentionsCheckBox = new JCheckBox() {
-			{
-				setText(Lang.get("kmc.notes.create.no_extract_mentions"));
-			}
-		};
-		JPanel checkBoxesPanel = new JPanel() {
-			{
-				setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-				add(noExtractEmojisCheckBox);
-				add(noExtractHashtagsCheckBox);
-				add(noExtractMentionsCheckBox);
-			}
-		};
-		centerPanel.add(checkBoxesPanel);
 		postContent = new JTextArea() {
 			{
 				setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -155,6 +187,13 @@ public final class MisskeyTimeline {
 					request.setNoExtractEmojis(noExtractEmojisCheckBox.isSelected());
 					request.setNoExtractHashtags(noExtractHashtagsCheckBox.isSelected());
 					request.setNoExtractMentions(noExtractMentionsCheckBox.isSelected());
+					switch (visibilityComboBox.getSelectedIndex()) {
+						case 0 -> request.setVisibility("public");
+						case 1 -> request.setVisibility("home");
+						case 2 -> request.setVisibility("followers");
+						case 3 -> request.setVisibility("specified");
+					}
+					request.setLocalOnly(localOnlyCheckBox.isSelected());
 					try {
 						new Create().get(Settings.getInstance().getTokens().get(0), request);
 					} catch (Exception excp) {
