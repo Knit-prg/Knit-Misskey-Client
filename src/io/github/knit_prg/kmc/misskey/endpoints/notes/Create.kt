@@ -10,6 +10,7 @@ import io.github.knit_prg.kmc.misskey.endpoints.EndpointResponse
 import io.github.knit_prg.kmc.misskey.endpoints.exceptions.CannotCreateAlreadyExpiredPoll
 import io.github.knit_prg.kmc.misskey.endpoints.exceptions.CannotRenoteToAPureRenote
 import io.github.knit_prg.kmc.misskey.endpoints.exceptions.CannotReplyToAPureRenote
+import io.github.knit_prg.kmc.misskey.endpoints.exceptions.EndpointsError
 import io.github.knit_prg.kmc.misskey.endpoints.exceptions.InternalError
 import io.github.knit_prg.kmc.misskey.endpoints.exceptions.NoSuchChannel
 import io.github.knit_prg.kmc.misskey.endpoints.exceptions.NoSuchRenoteTarget
@@ -42,7 +43,7 @@ class Create : Endpoint() {
 			"NO_SUCH_RENOTE_TARGET" -> throw NoSuchRenoteTarget()
 			"NO_SUCH_REPLY_TARGET" -> throw NoSuchReplyTarget()
 			"YOU_HAVE_BEEN_BLOCKED" -> throw YouHaveBeenBlocked()
-			else -> throw InternalError()
+			else -> throw EndpointsError.commonErrors(errorCode)
 		}
 	}
 

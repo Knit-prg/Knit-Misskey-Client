@@ -4,6 +4,7 @@ import io.github.knit_prg.kmc.Dialogs;
 import io.github.knit_prg.kmc.Gui;
 import io.github.knit_prg.kmc.Lang;
 import io.github.knit_prg.kmc.Settings;
+import io.github.knit_prg.kmc.misskey.endpoints.exceptions.EndpointsError;
 import io.github.knit_prg.kmc.misskey.endpoints.notes.Create;
 
 import java.awt.BorderLayout;
@@ -158,7 +159,11 @@ public final class MisskeyTimeline {
 						new Create().get(Settings.getInstance().getTokens().get(0), request);
 					} catch (Exception excp) {
 						excp.printStackTrace();
-						Dialogs.errorMsg(excp.getMessage());
+						if (excp instanceof EndpointsError) {
+							Dialogs.errorMsg(excp.getMessage() + "\n" + ((EndpointsError) excp).getCode() + "\n" + ((EndpointsError) excp).getId());
+						} else {
+							Dialogs.errorMsg(excp.getMessage());
+						}
 					}
 				});
 			}
