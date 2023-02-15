@@ -1,11 +1,20 @@
 package io.github.knit_prg.kmc;
 
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,6 +53,38 @@ public final class Gui {
 					System.exit(1);
 				}
 				System.exit(0);
+			}
+		});
+		mainFrame.setJMenuBar(new JMenuBar() {
+			{
+				add(new JMenu(Lang.get("kmc.menubar.about")) {
+					{
+						addMouseListener(new MouseAdapter() {
+							@Override
+							public void mousePressed(MouseEvent e) {
+								JDialog dialog = new JDialog(mainFrame) {
+									{
+										setSize(700, 500);
+										setLocationRelativeTo(null);
+										setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+									}
+								};
+								Container contentPane = dialog.getContentPane();
+								contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+								contentPane.add(new JLabel("Knit Misskey Client") {
+									{
+										setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+									}
+								});
+								contentPane.add(new JLabel("Libraries used"));
+								contentPane.add(new JLabel("Apache commons Text 1.10.0 by Apache Commons"));
+								contentPane.add(new JLabel("FlatLaf 3.0 by by FormDev Software"));
+								contentPane.add(new JLabel("Jackson 2.14.0 by FasterXML"));
+								dialog.setVisible(true);
+							}
+						});
+					}
+				});
 			}
 		});
 		mainFrame.setVisible(true);

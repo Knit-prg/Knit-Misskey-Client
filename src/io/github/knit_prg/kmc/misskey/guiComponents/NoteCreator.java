@@ -159,7 +159,7 @@ public class NoteCreator extends JPanel {
 	 *
 	 * @since 0.1.0
 	 */
-	private final JCheckBox pollMultipleCheckBox = new JCheckBox(Lang.get("kmc.create.notes.poll.multiple"));
+	private final JCheckBox pollMultipleCheckBox = new JCheckBox(Lang.get("kmc.notes.create.poll.multiple"));
 
 	/**
 	 * 選択肢に加える文字列の設定部
