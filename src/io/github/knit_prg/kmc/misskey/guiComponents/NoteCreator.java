@@ -6,6 +6,7 @@ import io.github.knit_prg.kmc.Settings;
 import io.github.knit_prg.kmc.misskey.endpoints.exceptions.EndpointsError;
 import io.github.knit_prg.kmc.misskey.endpoints.notes.Create;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  * Misskeyの投稿画面
@@ -228,6 +231,7 @@ public class NoteCreator extends JPanel {
 	@SuppressWarnings("FieldCanBeLocal")
 	private final JPanel visibilityPanel = new JPanel() {
 		{
+			setBorder(new TitledBorder(new LineBorder(Color.WHITE, 1), Lang.get("kmc.notes.create.visibility")));
 			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 			add(localOnlyCheckBox);
 			add(visibilityComboBox);
@@ -242,6 +246,7 @@ public class NoteCreator extends JPanel {
 	@SuppressWarnings("FieldCanBeLocal")
 	private final JPanel cwPanel = new JPanel() {
 		{
+			setBorder(new TitledBorder(new LineBorder(Color.WHITE, 1), Lang.get("kmc.notes.create.cw")));
 			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 			add(cwCheckBox);
 			add(cwTextField);
@@ -256,11 +261,13 @@ public class NoteCreator extends JPanel {
 	 */
 	private final JPanel pollPanel = new JPanel() {
 		{
+			setBorder(new TitledBorder(new LineBorder(Color.WHITE, 1), Lang.get("kmc.notes.create.poll.settings")));
 			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 			add(pollChoicesList);
 			add(pollMultipleCheckBox);
 			add(pollAddText);
 			add(pollAddButton);
+			add(pollDeleteButton);
 			add(pollExpireSpinner);
 			setVisible(false);
 		}
@@ -272,13 +279,14 @@ public class NoteCreator extends JPanel {
 	 * @since 0.1.0
 	 */
 	public NoteCreator() {
+		setBorder(new TitledBorder(new LineBorder(Color.WHITE, 1), Lang.get("kmc.notes.create.settings")));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(noExtractsPanel);
 		add(visibilityPanel);
 		add(cwPanel);
 		add(textTextArea);
-		add(pollPanel);
 		add(pollCheckBox);
+		add(pollPanel);
 		add(postButton);
 		addEvents();
 	}
