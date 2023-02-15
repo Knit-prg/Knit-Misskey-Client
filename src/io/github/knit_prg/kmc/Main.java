@@ -2,6 +2,9 @@ package io.github.knit_prg.kmc;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
+import io.github.knit_prg.kmc.misskey.MisskeyTimeline;
+import io.github.knit_prg.kmc.misskey.login.MiAuth;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,22 +17,38 @@ import java.time.ZonedDateTime;
 import java.util.Properties;
 import javax.swing.UIManager;
 
+/**
+ * 起動するやつ
+ *
+ * @author Knit prg.
+ * @since 0.1.0
+ */
 public final class Main {
 
+	/**
+	 * 起動
+	 *
+	 * @param args あれ
+	 * @since 0.1.0
+	 */
 	public static void main(String[] args) {
 		extractResource();
-		System.out.println(Lang.get("kmc.test"));
 		FlatDarkLaf.setup();
 		UIManager.put("TitlePane.menuBarEmbedded", false);
 		UIManager.put("TitlePane.unifiedBackground", false);
 		Gui.init();
-		if (Settings.get("tokens").size() == 0) {
-			Gui.openGetApiKey();
+		if (Settings.getInstance().getTokens().size() == 0) {
+			MiAuth.open();
 		} else {
-			Gui.openTimeline();
+			MisskeyTimeline.open();
 		}
 	}
 
+	/**
+	 * jarから外だしすべきファイルを外だしする。
+	 *
+	 * @since 0.1.0
+	 */
 	private static void extractResource() {
 		try {
 			Properties resourcesList = new Properties();

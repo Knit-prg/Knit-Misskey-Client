@@ -2,8 +2,29 @@
 
 ## 実装済API一覧
 
-- MiAuth
+- [x] [MiAuth](https://misskey-hub.net/docs/api)
 
 ### エンドポイント
 
-- [ ] notes/create (https://misskey-hub.net/docs/api/endpoints/notes/create.html)
+- [x] [notes/create](https://misskey-hub.net/docs/api/endpoints/notes/create.html)
+    - [ ] channelID (チャンネル指定機能)
+    - [x] cw (内容隠し)
+    - [ ] fileIds (ファイル添付)
+    - [x] localOnly (ローカルのみ)
+    - [x] noExtractEmojis (効果不明)
+    - [x] noExtractHashtags (効果不明)
+    - [x] noExtractMentions (効果不明)
+    - [ ] poll (投票)
+        - [x] choices (選択肢)
+        - [ ] expiredAfter (期間指定)
+        - [x] expiresAt (期限指定)
+        - [x] multiple (複数)
+    - [ ] renoteId (リノート)
+    - [ ] replyId (返信)
+    - [x] text (本文)
+    - [ ] visibleUserIds (特定のユーザーへのみ送信)
+    - [ ] visibility (可視性指定)
+        - [x] public
+        - [x] home
+        - [x] followers
+        - [ ] specified
