@@ -1,5 +1,6 @@
 package io.github.knit_prg.kmc;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -70,16 +72,37 @@ public final class Gui {
 									}
 								};
 								Container contentPane = dialog.getContentPane();
-								contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-								contentPane.add(new JLabel("Knit Misskey Client") {
+								contentPane.add(new JPanel() {
 									{
-										setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+										setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+										add(new JLabel("Knit Misskey Client") {
+											{
+												setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+												setAlignmentX(Component.CENTER_ALIGNMENT);
+											}
+										});
+										add(new JLabel("Libraries used") {
+											{
+												setAlignmentX(Component.CENTER_ALIGNMENT);
+											}
+										});
+										add(new JLabel("Apache commons Text 1.10.0 by Apache Commons") {
+											{
+												setAlignmentX(Component.CENTER_ALIGNMENT);
+											}
+										});
+										add(new JLabel("FlatLaf 3.0 by FormDev Software") {
+											{
+												setAlignmentX(Component.CENTER_ALIGNMENT);
+											}
+										});
+										add(new JLabel("Jackson 2.14.0 by FasterXML") {
+											{
+												setAlignmentX(Component.CENTER_ALIGNMENT);
+											}
+										});
 									}
 								});
-								contentPane.add(new JLabel("Libraries used"));
-								contentPane.add(new JLabel("Apache commons Text 1.10.0 by Apache Commons"));
-								contentPane.add(new JLabel("FlatLaf 3.0 by by FormDev Software"));
-								contentPane.add(new JLabel("Jackson 2.14.0 by FasterXML"));
 								dialog.setVisible(true);
 							}
 						});
