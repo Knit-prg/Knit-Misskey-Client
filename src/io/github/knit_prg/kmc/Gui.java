@@ -1,7 +1,12 @@
 package io.github.knit_prg.kmc;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,6 +15,8 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -43,7 +50,7 @@ public final class Gui {
 	public static void init() {
 		mainFrame.setSize(800, 500);
 		mainFrame.setLocationRelativeTo(null);
-		mainFrame.setTitle("Knit Misskey Client v0.1.0");
+		mainFrame.setTitle("Knit Misskey Client v" + Main.VERSION_NAME);
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(new WindowAdapter() {
 			@Override
@@ -59,7 +66,7 @@ public final class Gui {
 		});
 		mainFrame.setJMenuBar(new JMenuBar() {
 			{
-				add(new JMenu(Lang.get("kmc.settings")){
+				add(new JMenu(Lang.get("kmc.settings")) {
 					{
 						addMouseListener(new MouseAdapter() {
 							@Override
@@ -118,8 +125,67 @@ public final class Gui {
 						});
 					}
 				});
+				add(new JMenu(Lang.get("kmc.menubar.check_update")) {
+					{
+						addMouseListener(new MouseAdapter() {
+							@Override
+							public void mousePressed(MouseEvent e) {
+								checkUpdate();
+							}
+						});
+					}
+				});
 			}
 		});
 		mainFrame.setVisible(true);
+	}
+
+	private static void checkUpdate() {
+		try {
+			URL url = new URL("https://api.github.com/repos/Knit-prg/Knit-Misskey-Client/releases/latest");
+			JsonNode json = new ObjectMapper().readTree(url);
+			String tagName = json.get("tag_name").asText();
+			if (tagName.equals(Main.VERSION_NAME)) {
+				Dialogs.errorMsg(Lang.get("kmc.check_update.no_update"));
+			} else {
+				JDialog dialog = new JDialog(mainFrame);
+				dialog.setSize(400, 200);
+				dialog.setLocationRelativeTo(null);
+				Container contentPane = dialog.getContentPane();
+				contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+				contentPane.add(new JLabel(Lang.get("kmc.check_update.has_update")) {
+					{
+						setAlignmentX(Component.CENTER_ALIGNMENT);
+					}
+				});
+				contentPane.add(new JLabel(tagName) {
+					{
+						setAlignmentX(Component.CENTER_ALIGNMENT);
+					}
+				});
+				contentPane.add(new JLabel("https://github.com/Knit-prg/Knit-Misskey-Client/releases") {
+					{
+						setCursor(new Cursor(Cursor.HAND_CURSOR));
+						setAlignmentX(Component.CENTER_ALIGNMENT);
+						addMouseListener(new MouseAdapter() {
+							@Override
+							public void mousePressed(MouseEvent e) {
+								if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+									try {
+										Desktop.getDesktop().browse(new URI("https://github.com/Knit-prg/Knit-Misskey-Client/releases"));
+									} catch (Exception ee) {
+										ee.printStackTrace();
+									}
+								}
+							}
+						});
+					}
+				});
+				dialog.setVisible(true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Dialogs.errorMsg(Lang.get("kmc.check_update.no_update"));
+		}
 	}
 }
