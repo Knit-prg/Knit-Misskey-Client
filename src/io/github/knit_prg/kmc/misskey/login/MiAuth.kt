@@ -129,7 +129,7 @@ class MiAuth {
 			textField = object : JTextField() {
 				init {
 					alignmentX = Component.CENTER_ALIGNMENT
-					maximumSize = Dimension(200, 25)
+					maximumSize = Dimension(200, Settings.instance.lineHeight)
 					addKeyListener(object : KeyAdapter() {
 						override fun keyTyped(e: KeyEvent?) {
 							onInput()

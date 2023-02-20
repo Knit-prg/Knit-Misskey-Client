@@ -26,6 +26,34 @@ import javax.swing.UIManager;
 public final class Main {
 
 	/**
+	 * メジャーバージョン
+	 *
+	 * @since 0.1.0
+	 */
+	public static final int MAJOR_VERSION=0;
+
+	/**
+	 * マイナーバージョン
+	 *
+	 * @since 0.1.0
+	 */
+	public static final int MINOR_VERSION=1;
+
+	/**
+	 * パッチバージョン
+	 *
+	 * @since 0.1.0
+	 */
+	public static final int PATCH_VERSION=0;
+
+	/**
+	 * バージョン
+	 *
+	 * @since 0.1.0
+	 */
+	public static final String VERSION_NAME=MAJOR_VERSION+"."+MINOR_VERSION+"."+PATCH_VERSION;
+
+	/**
 	 * 起動
 	 *
 	 * @param args あれ
