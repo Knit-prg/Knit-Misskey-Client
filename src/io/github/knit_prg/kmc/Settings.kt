@@ -1,6 +1,7 @@
 package io.github.knit_prg.kmc
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 
 import io.github.knit_prg.kmc.settingsProperties.Token
 
@@ -77,7 +78,19 @@ class Settings private constructor() {
 		sb.append("\n")
 		sb.append("\t]\n")
 		sb.append("}\n")
-		return sb.toString()
+		val mapper = ObjectMapper()
+		val node = mapper.createObjectNode()
+		node.put("lang", lang)
+		val tokensArrayNode = mapper.createArrayNode()
+		tokens.forEach {
+			val tokenObjectNode = mapper.createObjectNode()
+			tokenObjectNode.put("token", it.token)
+			tokenObjectNode.put("type", it.type)
+			tokenObjectNode.put("user", it.user)
+			tokensArrayNode.add(tokenObjectNode)
+		}
+		node.set("tokens", tokensArrayNode) as ObjectNode
+		return node.toPrettyString()
 	}
 
 	companion object {
