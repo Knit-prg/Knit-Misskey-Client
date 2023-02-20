@@ -1,10 +1,21 @@
 package io.github.knit_prg.kmc;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Set;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +30,8 @@ import javax.swing.SpinnerNumberModel;
  */
 public final class SettingsScreen {
 
+	private final HashMap<String, String> langs = new HashMap<>();
+
 	/**
 	 * 行の高さを選ぶやつ
 	 *
@@ -27,6 +40,52 @@ public final class SettingsScreen {
 	private final JSpinner lineHeightSpinner = new JSpinner(new SpinnerNumberModel(Settings.getInstance().getLineHeight(), 0, null, 1)) {
 		{
 			setMaximumSize(new Dimension(getMaximumSize().width, Settings.getInstance().getLineHeight()));
+		}
+	};
+
+	private final DefaultComboBoxModel<String> langsModel = new DefaultComboBoxModel<>() {
+		{
+			{
+				{
+					File langDir = new File("KMC/lang/");
+					File[] langFiles = langDir.listFiles(pathname -> pathname.getName().startsWith("lang") && pathname.getName().endsWith(".properties"));
+					for (File langFile : langFiles) {
+						String langFileName = langFile.getName();
+						String langId;
+						if (langFileName.equals("lang.properties")) {
+							langId = "ja-jp";
+						} else {
+							langId = StringUtils.stripStart(langFileName, "lang_");
+							langId = StringUtils.stripEnd(langId, ".properties");
+						}
+						try {
+							LangPropertiesMetaData langPropertiesMetaData = new LangPropertiesMetaData(new FileInputStream(langFile));
+							String langName = Objects.requireNonNullElse(langPropertiesMetaData.getName(), langId);
+							langs.put(langName, langId);
+							addElement(langName);
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+	};
+
+	/**
+	 * 言語を選ぶやつ
+	 *
+	 * @since 0.1.0
+	 */
+	private final JComboBox<String> langComboBox = new JComboBox<>(langsModel) {
+		{
+			setMaximumSize(new Dimension(getMaximumSize().width, Settings.getInstance().getLineHeight()));
+			Set<String> langNames = langs.keySet();
+			for (String langName : langNames) {
+				if (langs.get(langName).equals(Settings.getInstance().getLang())) {
+					setSelectedItem(langName);
+				}
+			}
 		}
 	};
 
@@ -63,8 +122,18 @@ public final class SettingsScreen {
 				setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 				add(new JLabel(Lang.get("kmc.settings.line_height")));
 				add(lineHeightSpinner);
+				add(Box.createGlue());
 			}
 		});
+		contentPane.add(new JPanel() {
+			{
+				setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+				add(new JLabel(Lang.get("kmc.settings.lang")));
+				add(langComboBox);
+				add(Box.createGlue());
+			}
+		});
+		contentPane.add(Box.createGlue());
 	}
 
 	/**
@@ -74,6 +143,7 @@ public final class SettingsScreen {
 	 */
 	private void onClose() {
 		Settings.getInstance().setLineHeight((Integer) lineHeightSpinner.getValue());
+		Settings.getInstance().setLang(langs.get((String) langComboBox.getSelectedItem()));
 		dialog.dispose();
 	}
 
