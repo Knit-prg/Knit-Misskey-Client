@@ -50,7 +50,7 @@ public class NoteCreator extends JPanel {
 	 *
 	 * @since 0.1.0
 	 */
-	private static final int LINE_HEIGHT = 20;
+	private static final int LINE_HEIGHT = Settings.getInstance().getLineHeight();
 
 	/**
 	 * 絵文字非展開の選択部

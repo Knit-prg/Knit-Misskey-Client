@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.knit_prg.kmc.settingsProperties.Token
 
 import java.io.File
-import java.lang.StringBuilder
 
 /**
  * 設定を管理する
@@ -31,6 +30,13 @@ class Settings private constructor() {
 	val tokens = ArrayList<Token>()
 
 	/**
+	 * 行の高さ
+	 *
+	 * @since 0.1.0
+	 */
+	var lineHeight = 20
+
+	/**
 	 * 設定を読み込む居
 	 *
 	 * @since 0.1.0
@@ -51,6 +57,7 @@ class Settings private constructor() {
 				tokenT.user = user
 				tokens.add(tokenT)
 			}
+			json?.get("line_height")?.asInt()?.run { lineHeight = this }
 		} catch (e: Exception) {
 			e.printStackTrace()
 		}
@@ -62,22 +69,6 @@ class Settings private constructor() {
 	 * @since 0.1.0
 	 */
 	fun toJson(): String {
-		val sb = StringBuilder("{\n")
-		sb.append("\t\"lang\":\"${lang}\",\n")
-		sb.append("\t\"tokens\":[\n")
-		tokens.forEachIndexed { i, it ->
-			if (i != 0) {
-				sb.append(",\n")
-			}
-			sb.append("\t\t{\n")
-			sb.append("\t\t\t\"token\":\"${it.token}\",\n")
-			sb.append("\t\t\t\"type\":\"${it.type}\",\n")
-			sb.append("\t\t\t\"user\":\"${it.user}\"\n")
-			sb.append("\t\t}")
-		}
-		sb.append("\n")
-		sb.append("\t]\n")
-		sb.append("}\n")
 		val mapper = ObjectMapper()
 		val node = mapper.createObjectNode()
 		node.put("lang", lang)
@@ -90,6 +81,7 @@ class Settings private constructor() {
 			tokensArrayNode.add(tokenObjectNode)
 		}
 		node.set("tokens", tokensArrayNode) as ObjectNode
+		node.put("line_height",lineHeight)
 		return node.toPrettyString()
 	}
 

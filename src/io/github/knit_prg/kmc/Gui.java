@@ -59,6 +59,16 @@ public final class Gui {
 		});
 		mainFrame.setJMenuBar(new JMenuBar() {
 			{
+				add(new JMenu(Lang.get("kmc.settings")){
+					{
+						addMouseListener(new MouseAdapter() {
+							@Override
+							public void mousePressed(MouseEvent e) {
+								new SettingsScreen().open();
+							}
+						});
+					}
+				});
 				add(new JMenu(Lang.get("kmc.menubar.about")) {
 					{
 						addMouseListener(new MouseAdapter() {
