@@ -2,7 +2,7 @@ package io.github.knit_prg.kmc;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
-import io.github.knit_prg.kmc.misskey.MisskeyTimeline;
+import io.github.knit_prg.kmc.misskey.MisskeyHomeScreen;
 import io.github.knit_prg.kmc.misskey.login.MiAuth;
 
 import java.io.FileInputStream;
@@ -30,28 +30,28 @@ public final class Main {
 	 *
 	 * @since 0.1.0
 	 */
-	public static final int MAJOR_VERSION=0;
+	public static final int MAJOR_VERSION = 0;
 
 	/**
 	 * マイナーバージョン
 	 *
 	 * @since 0.1.0
 	 */
-	public static final int MINOR_VERSION=1;
+	public static final int MINOR_VERSION = 1;
 
 	/**
 	 * パッチバージョン
 	 *
 	 * @since 0.1.0
 	 */
-	public static final int PATCH_VERSION=0;
+	public static final int PATCH_VERSION = 0;
 
 	/**
 	 * バージョン
 	 *
 	 * @since 0.1.0
 	 */
-	public static final String VERSION_NAME=MAJOR_VERSION+"."+MINOR_VERSION+"."+PATCH_VERSION;
+	public static final String VERSION_NAME = MAJOR_VERSION + "." + MINOR_VERSION + "." + PATCH_VERSION;
 
 	/**
 	 * 起動
@@ -68,7 +68,7 @@ public final class Main {
 		if (Settings.getInstance().getTokens().size() == 0) {
 			MiAuth.open();
 		} else {
-			MisskeyTimeline.open();
+			MisskeyHomeScreen.open();
 		}
 	}
 

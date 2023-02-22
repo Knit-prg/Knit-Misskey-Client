@@ -6,11 +6,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 import io.github.knit_prg.kmc.settingsProperties.Token;
 
@@ -65,6 +67,13 @@ public class Streaming {
 	public Channel channel;
 
 	/**
+	 * 受信時のイベント
+	 *
+	 * @since 0.1.0
+	 */
+	public ArrayList<Consumer<CharSequence>> onReceives = new ArrayList<>();
+
+	/**
 	 * つくる
 	 *
 	 * @param token   トークン
@@ -91,8 +100,9 @@ public class Streaming {
 
 			@Override
 			public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
-				System.out.println(data);
-				System.out.println(last);
+				onReceives.forEach(onReceive -> {
+					onReceive.accept(data);
+				});
 				return WebSocket.Listener.super.onText(webSocket, data, last);
 			}
 		};

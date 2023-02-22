@@ -6,7 +6,7 @@ import io.github.knit_prg.kmc.Gui
 import io.github.knit_prg.kmc.Lang
 import io.github.knit_prg.kmc.Post
 import io.github.knit_prg.kmc.Settings
-import io.github.knit_prg.kmc.misskey.MisskeyTimeline
+import io.github.knit_prg.kmc.misskey.MisskeyHomeScreen
 import io.github.knit_prg.kmc.settingsProperties.Token
 
 import java.awt.Color
@@ -267,7 +267,7 @@ class MiAuth {
 							?: throw NullPointerException("user or user.username is null")
 						token.user = "${userS}@${instanceName}"
 						Settings.instance.tokens.add(token)
-						MisskeyTimeline.open()
+						MisskeyHomeScreen.open()
 					} catch (e: Exception) {
 						e.printStackTrace()
 						warn.text = Lang.get("kmc.login.failed_to_get_token")
