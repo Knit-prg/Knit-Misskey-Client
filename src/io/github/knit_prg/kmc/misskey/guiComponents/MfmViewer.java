@@ -9,14 +9,14 @@ import javax.swing.JPanel;
  * @author Knit prg.
  * @since 0.1.0
  */
-public class Mfm extends JPanel {
+public class MfmViewer extends JPanel {
 
 	/**
 	 * つくるやつ
 	 *
 	 * @param mfm MFM
 	 */
-	public Mfm(String mfm) {
+	public MfmViewer(String mfm) {
 		add(new JLabel(mfm));
 	}
 }

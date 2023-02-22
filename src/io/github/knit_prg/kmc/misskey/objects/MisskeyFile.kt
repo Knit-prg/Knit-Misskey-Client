@@ -3,7 +3,7 @@ package io.github.knit_prg.kmc.misskey.objects
 import com.fasterxml.jackson.databind.JsonNode
 import java.awt.Dimension
 
-class File(json: JsonNode) {
+class MisskeyFile(json: JsonNode) {
 	val id = json.get("id")?.asText() ?: ""
 	val createdAt = json.get("createdAt")?.asText() ?: ""
 	val name = json.get("name")?.asText() ?: ""
@@ -25,12 +25,12 @@ class File(json: JsonNode) {
 	val user = json.get("user")?.asText()
 
 	companion object {
-		public fun getFiles(json: JsonNode): Array<File> {
-			val arrayList = arrayListOf<File>()
+		public fun getFiles(json: JsonNode): Array<MisskeyFile> {
+			val arrayList = arrayListOf<MisskeyFile>()
 			if (!json.isArray) return arrayList.toTypedArray()
 			for (i in 0 until json.size()) {
 				json.get(i)?.run {
-					arrayList.add(File(this))
+					arrayList.add(MisskeyFile(this))
 				}
 			}
 			return arrayList.toTypedArray()

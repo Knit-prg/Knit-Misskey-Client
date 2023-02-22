@@ -31,7 +31,7 @@ import javax.swing.border.TitledBorder;
  * @author Knit prg.
  * @since 0.1.0
  */
-public class NoteCreator extends JPanel {
+public class MisskeyNoteCreator extends JPanel {
 
 	/**
 	 * 公開範囲の一覧
@@ -278,7 +278,7 @@ public class NoteCreator extends JPanel {
 	 *
 	 * @since 0.1.0
 	 */
-	public NoteCreator() {
+	public MisskeyNoteCreator() {
 		setBorder(new TitledBorder(new LineBorder(Color.WHITE, 1), Lang.get("kmc.notes.create.settings")));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(noExtractsPanel);

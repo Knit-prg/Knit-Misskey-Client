@@ -2,7 +2,7 @@ package io.github.knit_prg.kmc.misskey;
 
 import io.github.knit_prg.kmc.Gui;
 import io.github.knit_prg.kmc.misskey.guiComponents.MisskeyTimeline;
-import io.github.knit_prg.kmc.misskey.guiComponents.NoteCreator;
+import io.github.knit_prg.kmc.misskey.guiComponents.MisskeyNoteCreator;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -30,7 +30,7 @@ public final class MisskeyHomeScreen {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 		contentPane.add(centerPanel, BorderLayout.CENTER);
-		centerPanel.add(new NoteCreator());
+		centerPanel.add(new MisskeyNoteCreator());
 		centerPanel.add(new MisskeyTimeline());
 		centerPanel.add(Box.createHorizontalGlue());
 		contentPane.setVisible(false);

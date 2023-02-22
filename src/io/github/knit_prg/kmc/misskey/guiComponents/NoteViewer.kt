@@ -1,7 +1,6 @@
 package io.github.knit_prg.kmc.misskey.guiComponents
 
-import io.github.knit_prg.kmc.misskey.objects.Note
-import javax.swing.JLabel
+import io.github.knit_prg.kmc.misskey.objects.MisskeyNote
 import javax.swing.JPanel
 
 /**
@@ -10,7 +9,7 @@ import javax.swing.JPanel
  * @author Knit prg.
  * @since 0.1.0
  */
-class NoteViewer(note: Note) : JPanel() {
+class NoteViewer(note: MisskeyNote) : JPanel() {
 
 	/**
 	 * ノートをつくる
@@ -18,6 +17,6 @@ class NoteViewer(note: Note) : JPanel() {
 	 * @since 0.1.0
 	 */
 	init {
-		add(Mfm(note.text))
+		add(MfmViewer(note.text))
 	}
 }

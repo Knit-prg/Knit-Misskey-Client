@@ -2,7 +2,7 @@ package io.github.knit_prg.kmc.misskey.objects
 
 import com.fasterxml.jackson.databind.JsonNode
 
-class Reaction {
+class MisskeyReaction {
 	companion object {
 		@JvmStatic
 		public fun reactions(json: JsonNode): Map<String, Int> {

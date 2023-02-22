@@ -22,7 +22,7 @@ import io.github.knit_prg.kmc.settingsProperties.Token;
  * @author Knit prg.
  * @since 0.1.0
  */
-public class Streaming {
+public class MisskeyStreaming {
 
 	/**
 	 * ID
@@ -79,7 +79,7 @@ public class Streaming {
 	 * @param token   トークン
 	 * @param channel 接続するチャンネル
 	 */
-	public Streaming(Token token, Channel channel) {
+	public MisskeyStreaming(Token token, Channel channel) {
 		this.token = token;
 		this.channel = channel;
 		HttpClient client = HttpClient.newHttpClient();
