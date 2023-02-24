@@ -85,6 +85,13 @@ public class MisskeyStreaming {
 		HttpClient client = HttpClient.newHttpClient();
 		webSocketBuilder = client.newWebSocketBuilder();
 		webSocketListener = new WebSocket.Listener() {
+
+			@Override
+			public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
+				System.out.println("statusCode=" + statusCode + ", reason=" + reason);
+				return WebSocket.Listener.super.onClose(webSocket, statusCode, reason);
+			}
+
 			@Override
 			public void onOpen(WebSocket webSocket) {
 				webSocket.request(Long.MAX_VALUE);

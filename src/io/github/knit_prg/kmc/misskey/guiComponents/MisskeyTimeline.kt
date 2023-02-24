@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent
 import javax.swing.BoxLayout
 import javax.swing.JPanel
 import javax.swing.JScrollPane
+import javax.swing.ScrollPaneConstants
 
 /**
  * Misskeyのタイムラインを示す
@@ -20,9 +21,17 @@ import javax.swing.JScrollPane
  */
 class MisskeyTimeline : JPanel() {
 
-	val scrollPane = JScrollPane()
+	val innerPanel = object : JPanel() {
+		init {
+			layout = BoxLayout(this, BoxLayout.Y_AXIS)
+		}
+	}
 
-	val innerPanel = JPanel()
+	val scrollPane = object : JScrollPane(innerPanel) {
+		init {
+			horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+		}
+	}
 
 	/**
 	 * つくる
@@ -31,9 +40,7 @@ class MisskeyTimeline : JPanel() {
 	 */
 	init {
 		layout = BorderLayout()
-		scrollPane.viewport.view = innerPanel
 		add(scrollPane, BorderLayout.CENTER)
-		innerPanel.layout = BoxLayout(innerPanel, BoxLayout.Y_AXIS)
 		val streaming = MisskeyStreaming(
 			Settings.instance.tokens[0],
 			MisskeyStreaming.Channel.HYBRID_TIME_LINE
@@ -48,6 +55,10 @@ class MisskeyTimeline : JPanel() {
 						innerPanel.isVisible = false
 						innerPanel.isVisible = true
 					}
+				}
+
+				else -> {
+					println(json)
 				}
 			}
 		}
